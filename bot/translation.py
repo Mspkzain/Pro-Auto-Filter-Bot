@@ -11,7 +11,7 @@ class Translation(object):
 <b>Don't Try to use me. Am a personal Bot🔥🔥😝</b>
 
 
-<b>My Creator : @MSPK_V2
+<b>My Creator : @MSPK_V2<b>
 
 
 <b>Press /help to know about available commands🤪</b>"""    
