@@ -81,7 +81,7 @@ async def cb_navg(bot, update: CallbackQuery):
 
     if ((index_val + 1 )== max_pages) or ((index_val + 1) == len(results)): # Max Pages
         temp_results.append([
-            InlineKeyboardButton("⏪ Back", callback_data=f"navigate({index_val}|back|{query})")
+            InlineKeyboardButton("⬅️ Back", callback_data=f"navigate({index_val}|back|{query})")
         ])
 
     elif int(index_val) == 0:
@@ -89,13 +89,13 @@ async def cb_navg(bot, update: CallbackQuery):
 
     else:
         temp_results.append([
-            InlineKeyboardButton("⏪ Back", callback_data=f"navigate({index_val}|back|{query})"),
-            InlineKeyboardButton("Next ⏩", callback_data=f"navigate({index_val}|next|{query})")
-        ])
+            InlineKeyboardButton("⬅️ Back", callback_data=f"navigate({index_val}|back|{query})"),
+            InlineKeyboardButton("Next ➡️", callback_data=f"navigate({index_val}|next|{query})")
+       
 
     if not int(index_val) == 0:    
         temp_results.append([
-            InlineKeyboardButton(f"🔰 Page {index_val + 1}/{len(results) if len(results) < max_pages else max_pages} 🔰", callback_data="ignore")
+            InlineKeyboardButton(f"🔱 Page {index_val + 1}/{len(results) if len(results) < max_pages else max_pages} 🔱", callback_data="ignore")
         ])
     
     if show_invite and int(index_val) !=0 :
@@ -1568,150 +1568,4 @@ async def cb_status(bot, update: CallbackQuery):
         [
             InlineKeyboardButton
                 (
-                    "🔙 Back", callback_data="settings"
-                ),
-            
-            InlineKeyboardButton
-                (
-                    "Close 🔐", callback_data="close"
-                )
-        ]
-    ]
-    
-    reply_markup = InlineKeyboardMarkup(buttons)
-    
-    await update.message.edit_text(
-        text, reply_markup=reply_markup, parse_mode="html"
-    )
-
-
-
-@Client.on_callback_query(filters.regex(r"about\((.+)\)"), group=2)
-async def cb_about(bot, update: CallbackQuery):
-    """
-    A Callback Funtion For Showing About Section In Bot Setting Menu
-    """
-    global VERIFY
-    chat_id = update.message.chat.id
-    user_id = update.from_user.id
-    
-    if user_id not in VERIFY.get(str(chat_id)):
-        return
-
-    text=f"<i><u>Bot's Status</u></i>\n"
-    text+=f"\n<b><i>Bot's Uptime:</i></b> <code>{time_formatter(time.time() - start_uptime)}</code>\n"
-    text+=f"\n<b><i>Bot Funtion:</i></b> <i>Pro Auto File Filter Bot</i>\n"
-    text+=f"""\n<b><i>Bot Support:</i></b> <a href="https://t.me/Mo_TECH_YT">MoTechYT</a>\n"""
-    text+="""\n<b><i>Source Code:</i></b> <a href="https://github.com/MRK_YT/Pro-Auto-Filter-Bot">Source</a>"""
-
-    buttons = [
-        [
-            InlineKeyboardButton
-                (
-                    "My Dev ⚡", url="https://t.me/MRK_YT"
-                ),
-                
-            InlineKeyboardButton
-                (
-                    "🔙 Back", callback_data="settings"
-                )
-        ],
-        [
-            InlineKeyboardButton
-                (
-                    "Close 🔐", callback_data="close"
-                )
-        ]
-    ]
-    
-    reply_markup = InlineKeyboardMarkup(buttons)
-    
-    await update.message.edit_text(
-        text, reply_markup=reply_markup, parse_mode="html"
-    )
-
-
-
-@Client.on_callback_query(filters.regex(r"^(start|help|about|close)$"), group=2)
-async def callback_data(bot, update: CallbackQuery):
-
-    query_data = update.data
-
-    if query_data == "start":
-        buttons = [[
-            InlineKeyboardButton('👨‍💼 𝙼𝚊𝚜𝚝𝚎𝚛', url='https://t.me/MRK_YT'),
-            InlineKeyboardButton('𝙷𝚎𝚕𝚙 🤔', callback_data="help")
-        ],[
-            InlineKeyboardButton('🖥️ 𝚃𝚞𝚝𝚘𝚛𝚒𝚊𝚕 𝚅𝚒𝚍𝚎𝚘 🖥️', url='https://youtu.be/uAHl5jvnrhk')
-        ],[
-            InlineKeyboardButton('🗣️ 𝙰𝚗𝚢 𝙳𝚘𝚞𝚋𝚝', url='https://t.me/Mo_Tech_group'),
-            InlineKeyboardButton('𝚄𝚙𝚍𝚊𝚝𝚎𝚜 🤖', url='https://t.me/Mo_Tech_YT')
-        ],[
-            InlineKeyboardButton('💥 𝚂𝚞𝚋𝚜𝚌𝚛𝚒𝚋𝚎 𝙼𝚢 𝚈𝚘𝚞𝚃𝚞𝚋𝚎 𝙲𝚑𝚊𝚗𝚗𝚎𝚕 💥', url='https://youtu.be/uAHl5jvnrhk')
-        ]]
-    
-        reply_markup = InlineKeyboardMarkup(buttons)
-        
-        await update.message.edit_text(
-            Translation.START_TEXT.format(update.from_user.mention),
-            reply_markup=reply_markup,
-            parse_mode="html",
-            disable_web_page_preview=True
-        )
-
-
-    elif query_data == "help":
-        buttons = [[
-            InlineKeyboardButton('Home ⚡', callback_data='start'),
-            InlineKeyboardButton('About 🚩', callback_data='about')
-        ],[
-            InlineKeyboardButton('Close 🔐', callback_data='close')
-        ]]
-    
-        reply_markup = InlineKeyboardMarkup(buttons)
-        
-        await update.message.edit_text(
-            Translation.HELP_TEXT,
-            reply_markup=reply_markup,
-            parse_mode="html",
-            disable_web_page_preview=True
-        )
-
-
-    elif query_data == "about": 
-        buttons = [[
-            InlineKeyboardButton('👤 @𝙼𝚛𝚔_𝚈𝚃 👤', url='https://t.me/MRK_YT')
-        ],[
-            InlineKeyboardButton('𝙼𝚊𝚜𝚝𝚎𝚛 @𝙰𝚕𝚋𝚎𝚛𝚝𝙴𝚒𝚗𝚜𝚝𝚎𝚒𝚗𝚃𝙶', url='https://t.me/AlbertEinsteinTG')
-        ],[
-            InlineKeyboardButton('🏠 𝙷𝚘𝚖𝚎', callback_data='start'),
-            InlineKeyboardButton('𝙲𝚕𝚘𝚜𝚎 🔐', callback_data='close')
-        ]]
-        
-        reply_markup = InlineKeyboardMarkup(buttons)
-        
-        await update.message.edit_text(
-            Translation.ABOUT_TEXT,
-            reply_markup=reply_markup,
-            parse_mode="html"
-        )
-
-
-    elif query_data == "close":
-        await update.message.delete()
-
-
-
-def time_formatter(seconds: float) -> str:
-    """ 
-    humanize time 
-    """
-    minutes, seconds = divmod(int(seconds),60)
-    hours, minutes = divmod(minutes, 60)
-    days, hours = divmod(hours, 24)
-    tmp = ((str(days) + "d, ") if days else "") + \
-        ((str(hours) + "h, ") if hours else "") + \
-        ((str(minutes) + "m, ") if minutes else "") + \
-        ((str(seconds) + "s") if seconds else "")
-    return tmp
-
+                    "🔙 Back", callback_data=
